@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "multiconsumers-queue"
+version = "0.1.0"
+description = "Wrapper for queue based producer/consumer parallel tasks execution"
+authors = ["IaroslavR <iarruss@ya.ru>"]
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/IaroslavR/multiconsumers-queue-cli"
+keywords = ["threading", "queue", "wrapper"]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+click = "^7.1.1"
+arrow = "^0.15.5"
+attrs = "^19.3.0"
+loguru = "^0.4.1"
+
+[tool.poetry.dev-dependencies]
+mypy = "^0.770"
+
+[tool.poetry.urls]
+issues = "https://github.com/IaroslavR/multiconsumers-queue-cli/issues"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
