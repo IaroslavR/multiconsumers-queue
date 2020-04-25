@@ -1,9 +1,8 @@
 import queue
 import threading
 import time
-from typing import Any, Optional, Counter as TypingCounter, List, Dict, Callable
+from typing import Counter as TypingCounter, Callable
 
-import arrow
 import attr
 from loguru import logger as log
 
