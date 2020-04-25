@@ -14,8 +14,8 @@ build:  ## Build package
 
 tests:  ## Run tests
 	poetry check
-	mypy multiconsumers_queue
-	pytest
+	poetry run pytest
+	poetry run mypy multiconsumers_queue
 
 publish-test: tests ## Publish package to the test.pypi.org
 	poetry config repositories.testpypi https://test.pypi.org/legacy/
