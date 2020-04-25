@@ -10,7 +10,7 @@ keywords = ["threading", "queue", "wrapper"]
 
 [tool.poetry.dependencies]
 python = "^3.7"
-click = "^7.1.1"
+click = { version = "^7.1.1", optional = true }  # For examples
 arrow = "^0.15.5"
 attrs = "^19.3.0"
 loguru = "^0.4.1"
@@ -19,6 +19,9 @@ loguru = "^0.4.1"
 mypy = "^0.770"
 pytest = "^5.4.1"
 coverage = "^5.1"
+
+[tool.poetry.extras]
+click = ["click"]
 
 [tool.poetry.urls]
 issues = "https://github.com/IaroslavR/multiconsumers-queue-cli/issues"
