@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "multiconsumers-queue"
-version = "0.1.1"
+version = "0.1.2"
 description = "Wrapper for queue based producer/consumers parallel tasks execution"
 authors = ["IaroslavR <iarruss@ya.ru>"]
 license = "MIT"

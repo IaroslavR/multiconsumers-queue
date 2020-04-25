@@ -12,10 +12,6 @@ from multiconsumers_queue.wrapper import Producer, Consumer
 reset_logger(log, "TRACE")
 
 
-def test_version():
-    assert __version__ == "0.1.1"
-
-
 def test_producer_ok():
     def get_item():
         yield 1
