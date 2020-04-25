@@ -1,19 +1,19 @@
 from collections import Counter
-import concurrent.futures
 import queue
 import time
 from typing import Counter as TypingCounter
 
 from loguru import logger as log
 
-from multiconsumers_queue import __version__, Producer, Consumer
+from multiconsumers_queue import __version__, Pool
 from multiconsumers_queue.helpers import reset_logger
+from multiconsumers_queue.wrapper import Producer, Consumer
 
 reset_logger(log, "TRACE")
 
 
 def test_version():
-    assert __version__ == "0.1.0"
+    assert __version__ == "0.1.1"
 
 
 def test_producer_ok():
@@ -45,7 +45,7 @@ def test_producer_exception():
 
 
 def test_consumer_ok():
-    def process_item(item):
+    def process_item(_item):
         pass
 
     stats: TypingCounter[str] = Counter()
@@ -74,24 +74,19 @@ def test_consumer_exception():
     assert q.empty()
 
 
-def test_producer_stop():
+def test_pool():
     def get_item():
         yield 1
         yield 2
         yield 3
-        p.stop()
+        pool.producer.stop()
         yield 4
 
-    def process_item(item):
+    def process_item(_item):
         time.sleep(0.1)
         return
 
-    stats: TypingCounter[str] = Counter()
-    q: queue.Queue = queue.Queue(1)
-    p = Producer(consumers_cnt=1, q=q, stats=stats, fn=get_item)
-    c = Consumer(q, process_item, stats)
-    with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
-        futures = {executor.submit(each.run) for each in [p, c]}
-        concurrent.futures.wait(futures)
-    assert stats == {"items produced": 3, "items consumed": 2, "items dropped": 1}
-    assert q.empty()
+    pool = Pool(get_item, process_item, lambda: None, workers=1)
+    pool.run()
+    assert pool.stats == {"items produced": 3, "items consumed": 2, "items dropped": 1}
+    assert pool.q.empty()
