@@ -1,4 +1,4 @@
-<p align="center">
+<p>
 <a href="https://www.python.org/downloads/release/python-370"><img alt="Python 3.7" src="https://img.shields.io/badge/python-3.7-blue.svg"></a>
 <a href="https://github.com/ambv/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
 </p>
@@ -12,7 +12,7 @@ Backbone of CLI script for parallel tasks execution
 - scheduled tasks statistics logging 
 
 #### Examples:
-- [with ThreadPoolExecutor](cli-threads.py) for I/O bound tasks
+- [with ThreadPoolExecutor](examples/cli-threads.py) for I/O bound tasks
     ```
     Usage: cli-threads.py [OPTIONS]
     
