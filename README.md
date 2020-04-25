@@ -4,7 +4,7 @@
 </p>
 
 # multiconsumers-queue-cli
-Backbone of CLI script for parallel tasks execution
+Wrapper for queue based producer/consumers parallel tasks execution
 
 #### Futures:
 - graceful shutdown by ^C
