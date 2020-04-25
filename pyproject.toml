@@ -17,6 +17,8 @@ loguru = "^0.4.1"
 
 [tool.poetry.dev-dependencies]
 mypy = "^0.770"
+pytest = "^5.4.1"
+coverage = "^5.1"
 
 [tool.poetry.urls]
 issues = "https://github.com/IaroslavR/multiconsumers-queue-cli/issues"

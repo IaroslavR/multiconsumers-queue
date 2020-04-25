@@ -4,32 +4,17 @@ from itertools import chain
 import queue
 import random
 import signal
-import sys
 import time
 from typing import Counter as TypingCounter, Any, Iterable, no_type_check
 
 import attr
 import click
-from loguru import logger as log, Logger
+from loguru import logger as log
 
-from lib import ScheduledAction, Producer, Consumer
+from multiconsumers_queue import ScheduledAction, Producer, Consumer
+from multiconsumers_queue.helpers import reset_logger
 
 stats: TypingCounter[str] = Counter()
-
-
-def reset_logger(logger: Logger, level: str) -> None:
-    """Customize logging output"""
-    logger.remove()
-    kwargs = dict(
-        colorize=True,
-        format="<green>{time:YYYY-MM-DD HH:mm:ss}</green> <level>{message}</level>",
-        level=level,
-        backtrace=False,
-        diagnose=False,
-    )
-    if level in ["DEBUG", "TRACE"]:
-        kwargs.update({"backtrace": True, "diagnose": True})
-    logger.add(sink=sys.stderr, **kwargs)  # type: ignore
 
 
 def log_stats() -> None:
@@ -45,8 +30,8 @@ class ItemsProducer:
         """Producer"""
         for _ in range(self.limit):
             yield random.randint(1, 10)
-            # if random.randint(1, 10) == 7:
-            #     raise ValueError("7 received")
+            if random.randint(1, 10) == 7:
+                raise ValueError("Producer error")
 
 
 def process_item(item: int) -> None:
