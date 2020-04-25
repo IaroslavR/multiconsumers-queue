@@ -107,7 +107,7 @@ Worker = Union[Producer, Consumer]
 
 
 @attr.s(auto_attribs=True)
-class Pool:
+class ThreadPool:
     """Producer/Consumers pool"""
 
     src: Callable[[], Iterator[Any]]  # real producer

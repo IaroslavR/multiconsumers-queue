@@ -7,7 +7,7 @@ import attr
 import click
 from loguru import logger as log
 
-from multiconsumers_queue import Pool
+from multiconsumers_queue import ThreadPool
 from multiconsumers_queue.helpers import reset_logger
 
 
@@ -54,7 +54,7 @@ def main(**kwargs):
     reset_logger(log, kwargs["logging_level"])
     log.info(f"Started with {kwargs}")
     src = ItemsProducer(kwargs["limit"])
-    pool = Pool(src.get_item, process_item, log_stats, 30)
+    pool = ThreadPool(src.get_item, process_item, log_stats, 30)
     signal.signal(signal.SIGINT, receive_signal)
     pool.run()
 

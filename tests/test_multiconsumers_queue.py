@@ -5,7 +5,7 @@ from typing import Counter as TypingCounter
 
 from loguru import logger as log
 
-from multiconsumers_queue import __version__, Pool
+from multiconsumers_queue import __version__, ThreadPool
 from multiconsumers_queue.helpers import reset_logger
 from multiconsumers_queue.wrapper import Producer, Consumer
 
@@ -86,7 +86,7 @@ def test_pool():
         time.sleep(0.1)
         return
 
-    pool = Pool(get_item, process_item, lambda: None, workers=1)
+    pool = ThreadPool(get_item, process_item, lambda: None, workers=1)
     pool.run()
     assert pool.stats == {"items produced": 3, "items consumed": 2, "items dropped": 1}
     assert pool.q.empty()
