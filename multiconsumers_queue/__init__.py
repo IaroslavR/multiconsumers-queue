@@ -1,4 +1,3 @@
-from .scheduled_action import ScheduledAction
-from .wrapper import Producer, Consumer
+from .wrapper import Pool
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"

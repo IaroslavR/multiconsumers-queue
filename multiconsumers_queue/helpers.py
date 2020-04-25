@@ -1,9 +1,11 @@
+from __future__ import annotations
+
 import sys
 
-from loguru._logger import Logger  # noqa
+import loguru
 
 
-def reset_logger(logger: Logger, level: str) -> None:
+def reset_logger(logger: loguru.Logger, level: str) -> None:
     """Customize logging output"""
     logger.remove()
     kwargs = dict(
