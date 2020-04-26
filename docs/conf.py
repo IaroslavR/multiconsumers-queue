@@ -28,11 +28,15 @@ author = ",".join(meta["tool"]["poetry"]["authors"])
 copyright = f"2020, {author}"
 extensions = [
     "sphinx.ext.autodoc",
+    "sphinx.ext.intersphinx",
     "sphinx.ext.napoleon",
     "sphinx_autodoc_typehints",
     "sphinx_rtd_theme",
     "m2r",
+    "sphinx.ext.viewcode",
 ]
+
+intersphinx_mapping = {"python": ("https://docs.python.org/3.7", None)}
 
 # The short X.Y version
 version = meta["tool"]["poetry"]["version"]
@@ -54,6 +58,8 @@ exclude_patterns = [
     "_build",
 ]
 
+on_rtd = os.environ.get("READTHEDOCS", None) == "True"
+needs_sphinx = "2.3.1"
 
 # -- Options for HTML output -------------------------------------------------
 
@@ -66,7 +72,8 @@ html_theme_options = {"navigation_depth": -1}
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ["_static"]
+if on_rtd:
+    html_static_path = ["_static"]
 
 # Output file base name for HTML help builder.
 htmlhelp_basename = project
