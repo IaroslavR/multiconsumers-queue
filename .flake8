@@ -1,0 +1,11 @@
+[flake8]
+select = ANN,B,B9,BLK,C,D,DAR,E,F,I,S,W
+ignore = E203,E501,W503
+max-line-length = 100
+max-complexity = 10
+application-import-names = multiconsumers_queue
+import-order-style = google
+docstring-convention = google
+per-file-ignores =
+  *:ANN101,ANN003
+  tests/*:S101,ANN,D,DAR
