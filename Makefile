@@ -20,3 +20,6 @@ tests:  ## Run tests
 publish-test: tests ## Publish package to the test.pypi.org
 	poetry config repositories.testpypi https://test.pypi.org/legacy/
 	poetry publish -r testpypi --build
+
+publish: tests build  ## Publish package
+	poetry publish
