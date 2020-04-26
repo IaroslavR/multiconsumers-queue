@@ -1,3 +1,4 @@
+"""Wrapper for queue based producer/consumers."""
 from __future__ import annotations
 
 from collections import Counter
@@ -6,24 +7,17 @@ from itertools import chain
 import queue
 import threading
 import time
-from typing import (
-    Counter as TypingCounter,
-    Callable,
-    Union,
-    List,
-    Any,
-    Iterator,
-)
+from typing import Any, Callable, Counter as TypingCounter, Iterator, List, Union
 
 import attr
 from loguru import logger as log
 
-from multiconsumers_queue.scheduled_action import ScheduledAction
+from multiconsumers_queue.helpers import ScheduledAction
 
 
 @attr.s(auto_attribs=True)
 class Producer:
-    """Wrapper for stc function. Currently only one producer can be started"""
+    """Wrapper for data source function."""
 
     q: queue.Queue
     fn: Callable[[], Iterator[Any]]
@@ -35,10 +29,12 @@ class Producer:
     wait_for_queue: float = 0.01  # Minimize CPU load for waiting loop
 
     def stop_consumers(self) -> None:
+        """Send None to the consumers."""
         for _ in range(self.consumers_cnt):
             self.q.put(None)
 
     def run(self) -> None:
+        """Start Producer."""
         log.debug(f"{self.name} started")
         try:
             for item in self.fn():
@@ -65,12 +61,13 @@ class Producer:
             log.debug(f"{self.name} finished")
 
     def stop(self) -> None:
+        """Interrupt Producer."""
         self.stop_now = True
 
 
 @attr.s(auto_attribs=True)
 class Consumer:
-    """Wrapper for consumer function"""
+    """Wrapper for data processing function."""
 
     q: queue.Queue
     fn: Callable
@@ -79,6 +76,7 @@ class Consumer:
     lock: threading.Lock = attr.ib(factory=threading.Lock, repr=False)
 
     def run(self) -> None:
+        """Start Consumer."""
         log.debug(f"{self.name} started")
         wait_for_items = True
         while wait_for_items:
@@ -103,17 +101,14 @@ class Consumer:
         log.debug(f"{self.name} finished")
 
 
-Worker = Union[Producer, Consumer]
-
-
 @attr.s(auto_attribs=True)
 class ThreadPool:
-    """Producer/Consumers pool"""
+    """Producer/Consumers thread pool."""
 
     src: Callable[[], Iterator[Any]]  # real producer
     dst: Callable  # real consumer
     notifier: Callable
-    notification_interval: int = 60
+    notification_interval: Union[int, float] = 60
     workers: int = 5
     q: queue.Queue = attr.ib()
     stats: TypingCounter[str] = attr.ib(factory=Counter)
@@ -122,19 +117,35 @@ class ThreadPool:
 
     @consumers.default  # noqa
     def init_consumers(self) -> List[Consumer]:
+        """Init Consumer.
+
+        Returns:
+            List[Consumer]
+        """
         return [
             Consumer(self.q, self.dst, self.stats, f"consumer-{idx}") for idx in range(self.workers)
         ]
 
     @producer.default  # noqa
     def init_producer(self) -> Producer:
+        """Init Producer.
+
+        Returns:
+            Producer
+        """
         return Producer(self.q, self.src, self.stats, self.workers)
 
     @q.default  # noqa
     def init_queue(self) -> queue.Queue:
+        """Init queue.
+
+        Returns:
+            queue.Queue
+        """
         return queue.Queue(self.workers)
 
     def run(self) -> None:
+        """Start processing."""
         workers: chain[Union[Producer, Consumer]] = chain([self.producer], self.consumers)
         notifier = ScheduledAction(self.notifier, interval=self.notification_interval)
         try:

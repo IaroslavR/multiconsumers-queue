@@ -1,7 +1,9 @@
+"""Demo script with ThreadPoolExecutor and ^C handler."""
+
 import random
 import signal
 import time
-from typing import Any, no_type_check, Iterator
+from typing import Any, Iterator, no_type_check
 
 import attr
 import click
@@ -13,18 +15,34 @@ from multiconsumers_queue.helpers import reset_logger
 
 @attr.s(auto_attribs=True)
 class ItemsProducer:
+    """Example of Producer with initialization before start."""
+
     limit: int
 
     def get_item(self) -> Iterator[int]:
-        """Producer"""
+        """Producer.
+
+        Yields:
+            int
+
+        Raises:
+            ValueError: random error
+        """
         for _ in range(self.limit):
-            yield random.randint(1, 10)
-            if random.randint(1, 10) == 7:
+            yield random.randint(1, 10)  # noqa: S311
+            if random.randint(1, 10) == 7:  # noqa: S311
                 raise ValueError("Producer error")
 
 
 def process_item(item: int) -> None:
-    """Consumer"""
+    """Consumer.
+
+    Args:
+        item: Item to process
+
+    Raises:
+        ValueError: random error
+    """
     if item == 3:
         raise ValueError("Value 3 not allowed")
     time.sleep(item)
@@ -39,19 +57,31 @@ def process_item(item: int) -> None:
     "--limit", help="How many items can be produced", default=50, show_default=True, type=int
 )
 @click.option("--logging-level", help="Logging level", default="INFO", show_default=True, type=str)
-def main(**kwargs):
-    """Demo script with ThreadPoolExecutor"""
+def main(**kwargs) -> None:
+    """Demo script with ThreadPoolExecutor.
+
+    Args:
+        **kwargs: arguments from click
+    """
 
     def log_stats() -> None:
-        """Stats logging for ScheduledLogger"""
+        """Stats logging for ScheduledLogger."""
         log.info(dict(pool.stats))
 
     def receive_signal(_sig_num: int, _frame: Any) -> None:
-        """^C handler"""
+        """^C handler.
+
+        Args:
+            _sig_num: Signal as int
+            _frame: Current stack frame
+
+        References:
+            https://docs.python.org/3/library/signal.html#signal.signal
+        """
         log.debug(f"^C signal received")
         pool.producer.stop()
 
-    reset_logger(log, kwargs["logging_level"])
+    reset_logger(kwargs["logging_level"])
     log.info(f"Started with {kwargs}")
     src = ItemsProducer(kwargs["limit"])
     pool = ThreadPool(src.get_item, process_item, log_stats, 30)

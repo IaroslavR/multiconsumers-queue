@@ -9,15 +9,15 @@ Wrapper for queue based producer/consumers parallel tasks execution
 #### Futures:
 - graceful shutdown by ^C
 - producer/consumer errors handling out of the box
-- scheduled tasks statistics logging 
+- scheduled tasks statistics logging
 
 #### Examples:
 - [with ThreadPoolExecutor](examples/cli-threads.py) for I/O bound tasks
     ```
     Usage: cli-threads.py [OPTIONS]
-    
+
       Demo script with ThreadPoolExecutor
-    
+
     Options:
       --workers INTEGER     How many workers will be started  [default: 5]
       --limit INTEGER       How many items can be produced  [default: 50]

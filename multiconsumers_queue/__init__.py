@@ -1,3 +1,5 @@
-from .wrapper import ThreadPool
+"""Wrapper for queue based producer/consumers parallel tasks execution and additional helpers."""
 
-__version__ = "0.1.2"
+from .wrapper import ThreadPool  # noqa: F401
+
+__version__ = "0.1.3"
