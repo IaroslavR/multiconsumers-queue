@@ -6,6 +6,8 @@ authors = ["Iaroslav Russkykh <iarruss@ya.ru>"]
 license = "MIT"
 readme = "README.md"
 repository = "https://github.com/IaroslavR/multiconsumers-queue"
+homepage = "https://github.com/IaroslavR/multiconsumers-queue"
+documentation = "http://multiconsumers-queue.rtfd.io/"
 keywords = ["threading", "queue", "wrapper"]
 
 [tool.poetry.dependencies]
