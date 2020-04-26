@@ -1,8 +1,8 @@
 [tool.poetry]
 name = "multiconsumers-queue"
-version = "0.1.2"
+version = "0.1.3"
 description = "Wrapper for queue based producer/consumers parallel tasks execution"
-authors = ["IaroslavR <iarruss@ya.ru>"]
+authors = ["Iaroslav Russkykh <iarruss@ya.ru>"]
 license = "MIT"
 readme = "README.md"
 repository = "https://github.com/IaroslavR/multiconsumers-queue"
@@ -32,6 +32,10 @@ typeguard = "^2.7.1"
 darglint = "^1.2.3"
 flake8-docstrings = "^1.5.0"
 pre-commit = "^2.3.0"
+sphinx = "2.3.1"
+sphinx-autodoc-typehints = "^1.10.3"
+sphinx-rtd-theme = "^0.4.3"
+m2r = "^0.2.1"
 
 [tool.poetry.extras]
 click = ["click"]

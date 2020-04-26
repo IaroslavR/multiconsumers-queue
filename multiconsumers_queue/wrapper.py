@@ -17,7 +17,7 @@ from multiconsumers_queue.helpers import ScheduledAction
 
 @attr.s(auto_attribs=True)
 class Producer:
-    """Wrapper for stc function. Currently only one producer can be started."""
+    """Wrapper for data source function."""
 
     q: queue.Queue
     fn: Callable[[], Iterator[Any]]
@@ -67,7 +67,7 @@ class Producer:
 
 @attr.s(auto_attribs=True)
 class Consumer:
-    """Wrapper for consumer function."""
+    """Wrapper for data processing function."""
 
     q: queue.Queue
     fn: Callable
