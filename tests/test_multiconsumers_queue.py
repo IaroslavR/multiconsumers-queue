@@ -85,7 +85,7 @@ def test_pool():
     def log_stats() -> None:
         log.info(dict(pool.stats))
 
-    pool = ThreadPool(get_item, process_item, log_stats, notification_interval=0.1, workers=1)
+    pool = ThreadPool(get_item, process_item, log_stats, notification_interval=0.1, consumers_cnt=1)
     pool.run()
     assert pool.stats == {"items produced": 3, "items consumed": 2, "items dropped": 1}
     assert pool.q.empty()

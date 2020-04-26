@@ -34,14 +34,21 @@ def reset_logger(level: str) -> None:
 class ScheduledAction(object):
     """Helper for action that should be run only after a certain amount of time has passed.
 
-    References:
-        https://docs.python.org/3/library/threading.html#timer-objects
+    Args:
+        fn: Callable for execute
+        args: Callable args
+        kwargs: Callable kwargs
+        notification_interval: time between fn calls in seconds
+        is_running: Running state flag
+        timer: Timer
+        start_time: Starting time
+        stop_time: Stopping time
     """
 
-    function: Callable
+    fn: Callable
     args: List = []
     kwargs: Dict[str, Any] = {}
-    interval: Union[int, float] = 60  # every minute
+    notification_interval: Union[int, float] = 60  # every minute
     is_running: bool = False
     timer: threading.Timer = attr.ib()
     start_time: arrow.arrow.Arrow = attr.ib()
@@ -54,7 +61,7 @@ class ScheduledAction(object):
         Returns:
             threading.Timer
         """
-        return threading.Timer(self.interval, self._run)
+        return threading.Timer(self.notification_interval, self._run)
 
     @start_time.default
     def start(self) -> arrow.arrow.Arrow:
@@ -69,7 +76,7 @@ class ScheduledAction(object):
     def _run(self) -> None:
         self.is_running = False
         self._start()
-        self.function(*self.args, **self.kwargs)
+        self.fn(*self.args, **self.kwargs)
 
     def _start(self) -> None:
         if not self.is_running:
@@ -82,5 +89,5 @@ class ScheduledAction(object):
         self.timer.cancel()
         self.is_running = False
         self.stop_time = arrow.get()
-        self.function(*self.args, **self.kwargs)
+        self.fn(*self.args, **self.kwargs)
         log.info(f"Execution time {self.stop_time - self.start_time}")
