@@ -2,8 +2,9 @@
 /__pycache__/
 /.mypy_cache/
 /dist/
-/*.egg-info/
+*.egg-info/
 /poetry.lock
 /.coverage
 /.pytype/
 /docs/_build/
+/.nox/

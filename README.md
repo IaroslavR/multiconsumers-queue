@@ -6,7 +6,7 @@
 </a>
 </p>
 
-# multiconsumers-queue-cli
+# multiconsumers-queue
 Wrapper for queue based producer/consumers parallel tasks execution
 
 #### Futures:
@@ -29,6 +29,7 @@ Wrapper for queue based producer/consumers parallel tasks execution
     ```
 
 #### References:
-- [Concurrency with Python: Threads and Locks](https://bytes.yingw787.com/posts/2019/01/12/concurrency_with_python_threads_and_locks/)
+- [Everything at Once: Python's Many Concurrency Models](https://speakerdeck.com/pycon2019/jess-shapiro-everything-at-once-pythons-many-concurrency-models)
 - [The tragic tale of the deadlocking Python queue](https://codewithoutrules.com/2017/08/16/concurrency-python/)
 - [Hypermodern Python](https://cjolowicz.github.io/posts/hypermodern-python-01-setup/#setting-up-a-python-project-using-poetry)
+- [attrs, self documentation - current state](https://github.com/python-attrs/attrs/issues/357)

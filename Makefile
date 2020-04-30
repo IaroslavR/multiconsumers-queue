@@ -17,14 +17,15 @@ bootstrap:  install ## Init tools
 
 
 test-annotations:  # mypy, pytest etc.
-	poetry run mypy multiconsumers_queue
-	pytest --typeguard-packages=multiconsumers_queue
-	poetry run pytype --disable=import-error multiconsumers_queue
+	poetry run mypy src/multiconsumers_queue
+	poetry run pytest --typeguard-packages=multiconsumers_queue
+	# https://github.com/google/pytype/issues/573
+	#poetry run pytype --disable=import-error src/multiconsumers_queue
 
 test:  ## Run tests
 	poetry check
-	poetry run pytest
-	poetry run flake8
+	poetry run pytest -c tests/pytest.ini
+	poetry run flake8 src/
 	poetry export --dev --format=requirements.txt --without-hashes --output=requirements.txt
 	poetry run safety check --full-report --file=requirements.txt
 	rm requirements.txt
