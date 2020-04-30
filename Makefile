@@ -30,6 +30,10 @@ test:  ## Run tests
 	poetry run safety check --full-report --file=requirements.txt
 	rm requirements.txt
 
+test-halstead-metrics:  ## Run Halstead metrics tests
+	# https://radon.readthedocs.io/en/latest/commandline.html#the-mi-command
+	poetry run radon mi src
+
 coverage:
 	poetry run coverage run -m pytest
 	poetry run coverage report
